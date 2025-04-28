@@ -10,7 +10,8 @@ const createOrderFromCart = async (req, res) => {
       shippingCharge = 0,
       couponCode = null,
       discount = 0,
-      expectedDeliveryDate = null
+      expectedDeliveryDate = null,
+      paymentId   // 👈 yeh new field liya body se
     } = req.body;
 
     const cart = await Cart.findOne({ user: userId }).populate("items.product items.seller");
@@ -48,6 +49,7 @@ const createOrderFromCart = async (req, res) => {
       shippingAddress,
       paymentMethod,
       expectedDeliveryDate,
+      paymentId,  
       orderStatus: "Pending"
     });
 
@@ -59,7 +61,6 @@ const createOrderFromCart = async (req, res) => {
   }
 };
 
-// ✅ Customer: Get all orders
 const getCustomerOrderList = async (req, res) => {
   try {
     const orders = await Order.find({ user: req.user._id })
@@ -104,7 +105,6 @@ const getSellerOrderList = async (req, res) => {
   }
 };
 
-// ✅ Seller: Update item status (Shipped, Delivered, etc.)
 const updateItemStatusBySeller = async (req, res) => {
   try {
     const { orderId, productId, newStatus, deliveryDate } = req.body;
