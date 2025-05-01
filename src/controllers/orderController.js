@@ -90,7 +90,6 @@ const trackCustomerOrder = async (req, res) => {
   }
 };
 
-// ✅ Seller: Get seller's order list
 const getSellerOrderList = async (req, res) => {
   try {
     const sellerId = req.user._id;
@@ -164,7 +163,6 @@ const updateOrderStatusByAdmin = async (req, res) => {
   }
 };
 
-// ✅ All Roles: Get order details by ID
 const getOrderDetailsById = async (req, res) => {
   try {
     const { orderId } = req.body;

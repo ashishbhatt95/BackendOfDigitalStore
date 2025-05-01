@@ -12,9 +12,14 @@ const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString()
 
 const registerSeller = async (req, res) => {
   try {
-    const { businessEmail, password } = req.body;
-    if (!businessEmail) {
-      return res.status(400).json({ message: "Business email is required." });
+    const { businessEmail, password, location } = req.body;
+
+    if (!businessEmail || !password) {
+      return res.status(400).json({ message: "Business email and password are required." });
+    }
+
+    if (!location || !Array.isArray(location.coordinates) || location.coordinates.length !== 2) {
+      return res.status(400).json({ message: "Exact location (longitude, latitude) is required." });
     }
 
     const existingSeller = await Seller.findOne({ businessEmail });
@@ -22,7 +27,7 @@ const registerSeller = async (req, res) => {
     const existingSuperAdmin = await SuperAdmin.findOne({ email: businessEmail });
 
     if (existingSeller || existingCustomer || existingSuperAdmin) {
-      return res.status(400).json({ message: "Email is already registered" });
+      return res.status(400).json({ message: "Email is already registered." });
     }
 
     const otp = generateOTP();
@@ -33,10 +38,15 @@ const registerSeller = async (req, res) => {
       password: hashedPassword,
       otp,
       otpCreatedAt: Date.now(),
+      location: {
+        type: "Point",
+        coordinates: location.coordinates, // [longitude, latitude]
+      },
     });
-    await newSeller.save();
 
+    await newSeller.save();
     await sendOtpEmail(businessEmail, "Your OTP Code", otp, "sellerRegistration");
+
     res.status(200).json({ message: "OTP sent to email. Verify to complete registration." });
   } catch (err) {
     res.status(500).json({ message: "Server error.", error: err.message });

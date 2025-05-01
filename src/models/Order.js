@@ -41,7 +41,7 @@ const orderSchema = new mongoose.Schema({
     required: true,
     enum: ["Wallet", "PhonePe", "Paytm", "Google Pay", "Razorpay"],
   },
-  paymentId: {               // 👈 ADDED paymentId field
+  paymentId: {
     type: String,
     required: true,
   },

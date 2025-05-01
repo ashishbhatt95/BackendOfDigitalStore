@@ -24,6 +24,18 @@ const sellerSchema = new mongoose.Schema(
       pinCode: { type: String, trim: true },
       country: { type: String, default: "India", trim: true },
     },
+    location: {
+      type: {
+        type: String,
+        enum: ["Point"],
+        required: true,
+        default: "Point",
+      },
+      coordinates: {
+        type: [Number], // [longitude, latitude]
+        required: true,
+      },
+    },
     productCategories: [{ type: String, trim: true }],
     shippingMethod: { type: String, trim: true },
     termsConditions: { type: Boolean },
@@ -47,5 +59,8 @@ const sellerSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+// Create 2dsphere index for geospatial queries
+sellerSchema.index({ location: "2dsphere" });
 
 module.exports = mongoose.model("Seller", sellerSchema);
