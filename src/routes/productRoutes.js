@@ -11,7 +11,7 @@ const {
   getProductById,
   isAdvertised,
   getAdvertisedProducts,
-  getProductsByCategory
+  getProductsByCategory,
 } = require("../controllers/SellerController/productController");
 const { roleAuthorization } = require("../middleware/authMiddleware");
 
