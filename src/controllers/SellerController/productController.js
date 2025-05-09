@@ -1,6 +1,7 @@
 const Product = require("../../models/SellerPanelModule/productModel");
 const { S3Client, DeleteObjectCommand } = require("@aws-sdk/client-s3");
 const Seller = require("../../models/SellerPanelModule/sellerModel");
+const mongoose = require("mongoose");
 require("dotenv").config();
 
 const s3 = new S3Client({
