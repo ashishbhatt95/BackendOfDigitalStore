@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const Admin = require('../models/AdminPanelModule/registerModel');
 const Seller = require('../models/SellerPanelModule/sellerModel');
-const Customer = require('../models/customerModel');
+const Customer = require('../models/UserModule/customerModel');
 
 const roleAuthorization = (roles) => {
   return async (req, res, next) => {

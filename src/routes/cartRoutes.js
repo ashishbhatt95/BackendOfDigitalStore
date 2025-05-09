@@ -4,7 +4,7 @@ const {
   getCart,
   updateCartItem,
   removeItem,
-} = require("../controllers/cartController");
+} = require("../controllers/UserController/cartController");  
 const { roleAuthorization } = require("../middleware/authMiddleware");
 
 const router = express.Router();

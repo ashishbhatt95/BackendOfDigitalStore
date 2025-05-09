@@ -12,7 +12,7 @@ const {
   isAdvertised,
   getAdvertisedProducts,
   getProductsByCategory
-} = require("../controllers/productController");
+} = require("../controllers/SellerController/productController");
 const { roleAuthorization } = require("../middleware/authMiddleware");
 
 router.post("/add", roleAuthorization(["seller"]), upload.array("images", 5), addProduct);

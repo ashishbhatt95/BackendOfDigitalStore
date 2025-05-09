@@ -4,11 +4,10 @@ const dotenv = require("dotenv");
 const moment = require("moment");
 const crypto = require("crypto");
 const validator = require("validator");
-
-const Customer = require("../models/customerModel");
-const Seller = require("../models/SellerPanelModule/sellerModel");
-const SuperAdmin = require("../models/AdminPanelModule/registerModel");
-const { sendOtpEmail } = require("../config/email");
+const Customer = require("../../models/UserModule/customerModel");
+const Seller = require("../../models/SellerPanelModule/sellerModel");
+const SuperAdmin = require("../../models/AdminPanelModule/registerModel");
+const { sendOtpEmail } = require("../../config/email");
 
 const generateOTP = () => Math.floor(1000 + Math.random() * 9000);
 

@@ -1,7 +1,7 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
-const Customer = require("../../models/customerModel");
+const Customer = require("../../models/UserModule/customerModel");
 const Seller = require("../../models/SellerPanelModule/sellerModel");
 const SuperAdmin = require("../../models/AdminPanelModule/registerModel");
 const { sendOtpEmail } = require("../../config/email");
