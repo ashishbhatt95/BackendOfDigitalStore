@@ -68,7 +68,7 @@ const createOrderFromCart = async (req, res) => {
 
 const getCustomerOrderList = async (req, res) => {
   try {
-    const orders = await Order.find({ user: req.user._id })
+    const orders = await Order.find({ user: req.user.id })
       .populate("items.product items.seller")
       .sort({ createdAt: -1 });
 
@@ -82,7 +82,7 @@ const getCustomerOrderList = async (req, res) => {
 const trackCustomerOrder = async (req, res) => {
   try {
     const { orderId } = req.body;
-    const userId = req.user._id;
+    const userId = req.user.id;
 
     const order = await Order.findOne({ _id: orderId, user: userId })
       .populate("items.product items.seller user");
@@ -97,7 +97,7 @@ const trackCustomerOrder = async (req, res) => {
 
 const getSellerOrderList = async (req, res) => {
   try {
-    const sellerId = req.user._id;
+    const sellerId = req.user.id;
 
     const orders = await Order.find({ "items.seller": sellerId })
       .populate("user items.product")
@@ -112,7 +112,7 @@ const getSellerOrderList = async (req, res) => {
 const updateItemStatusBySeller = async (req, res) => {
   try {
     const { orderId, productId, newStatus, deliveryDate } = req.body;
-    const sellerId = req.user._id;
+    const sellerId = req.user.id;
 
     const order = await Order.findOne({
       _id: orderId,
