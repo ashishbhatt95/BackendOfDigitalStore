@@ -39,11 +39,13 @@ const orderSchema = new mongoose.Schema({
   paymentMethod: {
     type: String,
     required: true,
-    enum: ["Wallet", "PhonePe", "Paytm", "Google Pay", "Razorpay"],
+    enum: ["Wallet", "PhonePe", "Paytm", "Google Pay", "Razorpay", "COD"], // ✅ COD added
   },
   paymentId: {
     type: String,
-    required: true,
+    required: function() {
+      return this.paymentMethod !== "COD"; // ✅ Required only for online payments
+    },
   },
   paymentStatus: {
     type: String,
