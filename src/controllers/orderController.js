@@ -3,7 +3,7 @@ const Cart = require("../models/UserModule/cartModel");
 
 const createOrderFromCart = async (req, res) => {
   try {
-    const userId = req.user._id;
+    const userId = req.user.id;
     const {
       shippingAddress,
       paymentMethod,
@@ -11,11 +11,15 @@ const createOrderFromCart = async (req, res) => {
       couponCode = null,
       discount = 0,
       expectedDeliveryDate = null,
-      paymentId   // 👈 yeh new field liya body se
+      paymentId
     } = req.body;
 
+    // ✅ Validate paymentId only for online payments
+    if (paymentMethod !== "COD" && !paymentId) {
+      return res.status(400).json({ message: "Payment ID is required for online payments" });
+    }
+
     const cart = await Cart.findOne({ user: userId }).populate("items.product items.seller");
-  
     if (!cart || cart.items.length === 0) {
       return res.status(400).json({ message: "Cart is empty" });
     }
@@ -49,7 +53,7 @@ const createOrderFromCart = async (req, res) => {
       shippingAddress,
       paymentMethod,
       expectedDeliveryDate,
-      paymentId,  
+      paymentId: paymentMethod === "COD" ? null : paymentId,
       orderStatus: "Pending"
     });
 
@@ -58,6 +62,7 @@ const createOrderFromCart = async (req, res) => {
     res.status(201).json({ message: "Order placed successfully", order });
   } catch (error) {
     res.status(500).json({ message: "Failed to place order", error: error.message });
+    console.error("Order placement error:", error);
   }
 };
 
